@@ -1,0 +1,72 @@
+@startuml
+interface org.example.app.services.UserService {
+~ List<User> getUsers()
+~ void saveUser(User)
+~ User getUser(int)
+~ void deleteUser(int)
+}
+class org.example.app.repository.UserRepositoryImpl {
+- SessionFactory sessionFactory
++ List<User> getUsers()
++ void saveUser(User)
++ User getUser(int)
++ void deleteUser(int)
+}
+class org.example.app.controllers.UserController {
+- UserService service
++ String getUsers(Model)
++ String showFormToAdd(Model)
++ String saveUser(User)
++ String showFormToUpdate(int,Model)
++ String deleteUser(int)
+}
+class org.example.app.config.AppContext {
+- Environment environment
++ LocalSessionFactoryBean sessionFactory()
++ DataSource dataSource()
+- Properties hibernateProperties()
++ HibernateTransactionManager getTransactionManager()
+}
+class org.example.app.entities.User {
+- int id
+- String firstName
+- String lastName
+- String email
++ int getId()
++ void setId(int)
++ String getFirstName()
++ void setFirstName(String)
++ String getLastName()
++ void setLastName(String)
++ String getEmail()
++ void setEmail(String)
+}
+interface org.example.app.repository.UserRepository {
+~ List<User> getUsers()
+~ void saveUser(User)
+~ User getUser(int)
+~ void deleteUser(int)
+}
+class org.example.app.services.UserServiceImpl {
+~ UserRepository repository
++ List<User> getUsers()
++ void saveUser(User)
++ User getUser(int)
++ void deleteUser(int)
+}
+class org.example.app.config.AppInitializer {
+# Class<?>[] getRootConfigClasses()
+# Class<?>[] getServletConfigClasses()
+# String[] getServletMappings()
+}
+class org.example.app.config.WebMvcConfig {
++ InternalResourceViewResolver resolver()
++ void addResourceHandlers(ResourceHandlerRegistry)
+}
+
+
+org.example.app.repository.UserRepository <|.. org.example.app.repository.UserRepositoryImpl
+org.example.app.services.UserService <|.. org.example.app.services.UserServiceImpl
+org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer <|-- org.example.app.config.AppInitializer
+org.springframework.web.servlet.config.annotation.WebMvcConfigurer <|.. org.example.app.config.WebMvcConfig
+@enduml
